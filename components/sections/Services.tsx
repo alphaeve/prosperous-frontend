@@ -62,8 +62,8 @@ export default function Services() {
         className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
         style={{
           backgroundImage: `
-            linear-gradient(#1F1F1F 1px, transparent 1px),
-            linear-gradient(90deg, #1F1F1F 1px, transparent 1px)
+            linear-gradient(#0A192F 1px, transparent 1px),
+            linear-gradient(90deg, #0A192F 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
         }}
@@ -71,18 +71,20 @@ export default function Services() {
 
       {/* CONTENT LAYER */}
       <div className="relative z-10">
-        {/* SCROLL BADGE */}
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 z-50">
+        
+        {/* SCROLL BADGE - Adjusted top position for mobile */}
+        <div className="absolute top-6 md:top-12 left-1/2 -translate-x-1/2 z-50 scale-75 md:scale-100">
           <ScrollBadge />
         </div>
 
         <div className="h-screen flex flex-col justify-center relative">
-          {/* HEADER */}
-          <div className="container mx-auto px-10 mb-16">
-            <span className="text-[10px] font-black tracking-[0.4em] text-[#E2957A] uppercase mb-4 block">
+          
+          {/* HEADER - Added mt-20 on mobile to prevent collision with Badge */}
+          <div className="container mx-auto px-6 md:px-10 mb-10 md:mb-16 mt-24 md:mt-0">
+            <span className="text-[10px] font-black tracking-[0.4em] text-[#FF8C00] uppercase mb-4 block">
               Core Expertise
             </span>
-            <h2 className="text-2xl md:text-5xl font-bold text-[#1F1F1F] tracking-tighter leading-[0.9]">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#0A192F] tracking-tighter leading-[0.9]">
               Our <span className="italic font-light">Services.</span>
             </h2>
           </div>
@@ -90,33 +92,33 @@ export default function Services() {
           {/* SERVICES TRAY */}
           <div
             ref={trayRef}
-            className="flex items-stretch gap-0 pl-10 md:pl-20"
+            className="flex items-stretch gap-0 pl-6 md:pl-20"
             style={{ width: "max-content" }}
           >
             {services.map((service, index) => (
               <div
                 key={index}
-                className="w-[300px] md:w-[450px] pr-20 group flex flex-col justify-between"
+                className="w-[280px] md:w-[450px] pr-10 md:pr-20 group flex flex-col justify-between"
               >
-                <div className="flex items-start justify-between border-t border-slate-100 pt-8 mb-12">
-                  <span className="text-5xl font-light text-slate-200 group-hover:text-[#E2957A] transition-colors duration-500">
+                <div className="flex items-start justify-between border-t border-slate-100 pt-8 mb-8 md:mb-12">
+                  <span className="text-4xl md:text-5xl font-light text-slate-200 group-hover:text-[#FF8C00] transition-colors duration-500">
                     {service.id}
                   </span>
-                  <div className="text-slate-300 group-hover:text-[#1F1F1F] group-hover:rotate-12 transition-all duration-500">
+                  <div className="text-slate-300 group-hover:text-[#0A192F] group-hover:rotate-12 transition-all duration-500">
                     <service.Icon size={32} strokeWidth={1} />
                   </div>
                 </div>
 
                 <div className="flex-grow">
-                  <h3 className="text-2xl font-bold text-[#1F1F1F] mb-6 tracking-tight">
+                  <h3 className="text-xl md:text-2xl font-bold text-[#0A192F] mb-4 md:mb-6 tracking-tight">
                     {service.title}
                   </h3>
-                  <p className="text-slate-400 text-base leading-relaxed font-medium max-w-[320px]">
+                  <p className="text-slate-500 text-sm md:text-base leading-relaxed font-medium max-w-[240px] md:max-w-[320px]">
                     {service.desc}
                   </p>
                 </div>
 
-                <div className="mt-12 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#E2957A] cursor-pointer">
+                <div className="mt-8 md:mt-12 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF8C00] cursor-pointer">
                   <span className="group-hover:translate-x-1 transition-transform duration-300">
                     View Project Specs
                   </span>
@@ -125,13 +127,13 @@ export default function Services() {
               </div>
             ))}
 
-            <div className="w-[30vw]" />
+            <div className="w-[40vw] md:w-[30vw]" />
           </div>
 
-          {/* INSTRUCTION */}
-          <div ref={instructionRef} className="absolute bottom-12 left-10 flex items-center gap-6">
+          {/* INSTRUCTION - Hidden on small mobile to keep it minimal */}
+          <div ref={instructionRef} className="absolute bottom-12 left-6 md:left-10 hidden sm:flex items-center gap-6">
             <div className="w-12 h-[1px] bg-slate-200 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[#E2957A] translate-x-[-100%] animate-shimmer" />
+              <div className="absolute inset-0 bg-[#FF8C00] translate-x-[-100%] animate-shimmer" />
             </div>
             <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-slate-400">
               Scroll to discover
