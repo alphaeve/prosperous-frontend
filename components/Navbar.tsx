@@ -57,7 +57,7 @@ export default function Navbar() {
               <Zap size={18} className="text-white fill-current" />
             </div>
             <span className="text-lg font-bold tracking-tight text-white drop-shadow-md">
-              Phosphorus
+              PROSPEROUS
             </span>
           </Link>
 
@@ -87,11 +87,12 @@ export default function Navbar() {
                 <AnimatePresence>
                   {link.dropdown && hoverDropdown === link.name && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[480px] bg-slate-900/60 backdrop-blur-[40px] border border-white/20 rounded-[2.5rem] shadow-2xl overflow-hidden z-50 p-6"
-                    >
+  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+  className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[480px] bg-slate-900/80 backdrop-blur-[40px] border border-white/20 rounded-[2.5rem] shadow-2xl overflow-hidden z-50 p-6"
+>
+
                       <div className="grid grid-cols-2 gap-4">
                         {link.dropdown.map((item) => {
                           const Icon = item.icon;
@@ -249,7 +250,7 @@ export default function Navbar() {
 //               <Zap size={18} className="text-white fill-current" />
 //             </div>
 //             <span className="text-lg font-bold tracking-tight text-white">
-//               Phosphorus
+//               Prosperous
 //             </span>
 //           </Link>
 

@@ -10,7 +10,7 @@ export default function Page() {
       <section className="pt-32 pb-20 px-6 bg-[#0A192F]">
         <div className="max-w-6xl mx-auto">
           <span className="text-[#bbade0] font-bold text-xs uppercase tracking-[0.3em]">
-            Phosphorus Solar
+            Prosperous Solar
           </span>
           <h1 className="text-4xl md:text-6xl font-bold text-white mt-4">
             About Our Company

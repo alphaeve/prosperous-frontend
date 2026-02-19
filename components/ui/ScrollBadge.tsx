@@ -37,7 +37,7 @@ export default function ScrollBadge() {
           </defs>
           <text className="text-[8.5px] font-black tracking-[0.22em] fill-slate-900 uppercase">
             <textPath xlinkHref="#badgePath">
-              PHOSPHORUS SOLAR • ENGINEERING • DESIGN •
+              Prosperous SOLAR • ENGINEERING • DESIGN •
             </textPath>
           </text>
         </svg>

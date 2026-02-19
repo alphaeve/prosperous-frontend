@@ -71,8 +71,8 @@ export default function Hero() {
           ref={titleRef}
           className="text-5xl md:text-7xl lg:text-[6rem] font-extrabold text-white leading-[1.0] tracking-tighter"
         >
-          Phosphorus <br />
-          <span className="text-[#c79e81] inline-block mt-2">Solar Assets</span>
+          PROSPEROUS<br />
+          <span className="text-[#c79e81] inline-block mt-2">SOLAR ASSETS</span>
         </h1>
 
         {/* Description */}
@@ -94,13 +94,21 @@ export default function Hero() {
           transition={{ duration: 1, delay: 1.5 }}
           className="flex flex-col sm:flex-row gap-6 mt-12"
         >
-          <button className="group relative bg-[#bbade0] text-white px-10 py-5 text-[11px] font-bold uppercase tracking-[0.2em] flex items-center gap-6 transition-all duration-300 hover:bg-orange-600 hover:shadow-[0_0_30px_rgba(255,140,0,0.4)]">
-            Consult With Engineers
-            <ArrowRight
-              size={18}
-              className="group-hover:translate-x-2 transition-transform duration-300"
-            />
-          </button>
+         <button
+  onClick={() => {
+    const contactForm = document.getElementById("contact");
+    if (contactForm) {
+      contactForm.scrollIntoView({ behavior: "smooth" });
+    }
+  }}
+  className="group relative bg-transparent text-[#bbade0] border border-[#bbade0] px-10 py-5 text-[11px] font-bold uppercase tracking-[0.2em] flex items-center gap-4 transition-all duration-300 hover:bg-[#bbade0]/10 hover:text-[#E2957A]"
+>
+  Consult With Engineers
+  <ArrowRight
+    size={18}
+    className="group-hover:translate-x-2 transition-transform duration-300"
+  />
+</button>
 
           <button className="px-10 py-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white border border-white/30 backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-[#0A192F]">
             Technical Portfolio
@@ -121,7 +129,7 @@ export default function Hero() {
 
 
 
-
+// https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c29sYXIlMjBwYW5lbHxlbnwwfHwwfHx8MA%3D%3D
 
 
 
@@ -252,7 +260,7 @@ export default function Hero() {
 //             ref={titleRef}
 //             className="text-5xl md:text-6xl lg:text-[5.5rem] font-bold text-[#1F1F1F] leading-[1.05] tracking-tight mb-8"
 //           >
-//             Phosphorus <br />
+//             Prosperous <br />
 //             <span className="text-[#E2957A]">Solar Assets</span>
 //           </h1>
 
