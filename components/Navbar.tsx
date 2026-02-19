@@ -25,12 +25,15 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<string | null>(null); // For accordion
   const [scrolled, setScrolled] = useState(false);
   const [hoverDropdown, setHoverDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
+  // Close everything on route change
   useEffect(() => {
     setIsOpen(false);
+    setMobileMenuOpen(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -40,28 +43,29 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="fixed w-full top-6 z-[100] px-6 flex justify-center">
+    <div className="fixed w-full top-4 md:top-6 z-[100] px-4 md:px-6 flex justify-center">
       <nav
         className={cn(
-          "w-full max-w-6xl transition-all duration-500 rounded-full px-8 border",
-          // Glass Effect Logic
+          "w-full max-w-6xl transition-all duration-500 border",
+          // Dynamic Border Radius: Pill when closed, rounded corners when open on mobile
+          isOpen ? "rounded-[2rem]" : "rounded-full",
           scrolled 
-            ? "bg-slate-900/40 backdrop-blur-2xl border-white/20 py-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]" 
-            : "bg-white/10 backdrop-blur-lg border-white/10 py-5 shadow-none"
+            ? "bg-slate-900/60 backdrop-blur-2xl border-white/20 py-3 shadow-2xl" 
+            : "bg-white/10 backdrop-blur-xl border-white/10 py-4 md:py-5"
         )}
       >
-        <div className="flex justify-between items-center">
+        <div className="px-6 md:px-8 flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-[#bbade0] p-1.5 rounded-lg shadow-lg shadow-orange-500/40">
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
+            <div className="bg-[#bbade0] p-1.5 rounded-lg shadow-lg">
               <Zap size={18} className="text-white fill-current" />
             </div>
-            <span className="text-lg font-bold tracking-tight text-white drop-shadow-md">
+            <span className="text-base md:text-lg font-bold tracking-tight text-white uppercase">
               PROSPEROUS
             </span>
           </Link>
 
-          {/* Desktop Links */}
+          {/* Desktop Links (Hidden on Mobile) */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <div 
@@ -73,45 +77,31 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   className={cn(
-                    "text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-1.5 drop-shadow-sm",
-                    hoverDropdown === link.name ? "text-[#bbade0]" : "text-white/90 hover:text-white"
+                    "text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-1.5",
+                    hoverDropdown === link.name ? "text-[#bbade0]" : "text-white/80 hover:text-white"
                   )}
                 >
                   {link.name}
-                  {link.dropdown && (
-                    <ChevronDown size={12} className={cn("transition-transform opacity-50", hoverDropdown === link.name && "rotate-180 opacity-100")} />
-                  )}
+                  {link.dropdown && <ChevronDown size={12} className={cn("transition-transform", hoverDropdown === link.name && "rotate-180")} />}
                 </Link>
 
-                {/* Dropdown Glass Style */}
                 <AnimatePresence>
                   {link.dropdown && hoverDropdown === link.name && (
                     <motion.div
-  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-  animate={{ opacity: 1, y: 0, scale: 1 }}
-  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-  className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[480px] bg-slate-900/80 backdrop-blur-[40px] border border-white/20 rounded-[2.5rem] shadow-2xl overflow-hidden z-50 p-6"
->
-
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[480px] bg-slate-900/90 backdrop-blur-[40px] border border-white/20 rounded-[2.5rem] shadow-2xl p-6"
+                    >
                       <div className="grid grid-cols-2 gap-4">
                         {link.dropdown.map((item) => {
                           const Icon = item.icon;
                           return (
-                            <Link
-                              key={item.name}
-                              href={item.href}
-                              className="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/10 transition-all border border-transparent hover:border-white/10"
-                            >
-                              <div className="p-2.5 bg-white/10 rounded-xl text-white/60 group-hover:text-[#bbade0] transition-colors">
-                                <Icon size={18} strokeWidth={1.5} />
-                              </div>
+                            <Link key={item.name} href={item.href} className="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/10 transition-all border border-transparent hover:border-white/10">
+                              <div className="p-2.5 bg-white/10 rounded-xl text-white/60 group-hover:text-[#bbade0] transition-colors"><Icon size={18} /></div>
                               <div>
-                                <div className="text-[11px] font-bold uppercase tracking-wider text-white group-hover:text-[#bbade0] transition-colors">
-                                  {item.name}
-                                </div>
-                                <div className="text-[8px] font-medium text-white/40 tracking-widest mt-0.5 uppercase">
-                                  {item.sub}
-                                </div>
+                                <div className="text-[11px] font-bold uppercase text-white group-hover:text-[#bbade0]">{item.name}</div>
+                                <div className="text-[8px] text-white/40 tracking-widest uppercase">{item.sub}</div>
                               </div>
                             </Link>
                           );
@@ -122,50 +112,61 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
             ))}
-
-            <Link
-              href="/#contact"
-              className="bg-[#bbade0]/90 backdrop-blur-md text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#bbade0] transition-all shadow-lg hover:shadow-orange-500/20 active:scale-95 border border-white/10"
-            >
+            <Link href="/#contact" className="bg-[#bbade0] text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg active:scale-95">
               Consult Now
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+          {/* Mobile Toggle */}
+          <button className="md:hidden p-2 text-white" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Menu Glass Style */}
+        {/* Mobile Menu (Glass Style) */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 bg-white/10 backdrop-blur-2xl rounded-3xl overflow-hidden border border-white/10"
+              className="md:hidden px-6 pb-8 pt-4 overflow-hidden"
             >
-              <div className="p-6 flex flex-col gap-5">
+              <div className="flex flex-col gap-2">
                 {navLinks.map((link) => (
-                  <div key={link.name}>
-                    <Link href={link.href} className="text-sm font-bold text-white uppercase tracking-widest block py-2">{link.name}</Link>
-                    {link.dropdown && (
-                      <div className="grid grid-cols-1 gap-4 mt-3 pl-4 border-l border-white/20">
-                        {link.dropdown.map((sub) => (
-                          <Link 
-                            key={sub.name} 
-                            href={sub.href} 
-                            className="text-[10px] text-white/60 font-bold uppercase tracking-widest hover:text-[#bbade0]"
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
+                  <div key={link.name} className="border-b border-white/5 last:border-0">
+                    {link.dropdown ? (
+                      <div>
+                        <button 
+                          onClick={() => setMobileMenuOpen(mobileMenuOpen === link.name ? null : link.name)}
+                          className="flex items-center justify-between w-full py-4 text-sm font-bold text-white uppercase tracking-widest"
+                        >
+                          {link.name}
+                          <ChevronDown size={16} className={cn("transition-transform", mobileMenuOpen === link.name && "rotate-180")} />
+                        </button>
+                        <AnimatePresence>
+                          {mobileMenuOpen === link.name && (
+                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden bg-white/5 rounded-2xl mb-4">
+                              <div className="grid grid-cols-1 gap-2 p-4">
+                                {link.dropdown.map((sub) => (
+                                  <Link key={sub.name} href={sub.href} className="flex items-center gap-3 p-3 text-[11px] font-bold text-white/70 uppercase tracking-widest hover:text-[#bbade0]">
+                                    <sub.icon size={16} className="text-[#bbade0]" />
+                                    {sub.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
+                    ) : (
+                      <Link href={link.href} className="block py-4 text-sm font-bold text-white uppercase tracking-widest">
+                        {link.name}
+                      </Link>
                     )}
                   </div>
                 ))}
-                <Link href="/#contact" className="mt-4 text-center bg-[#bbade0] text-white py-4 rounded-2xl text-[10px] font-bold uppercase tracking-widest border border-white/10">
+                <Link href="/#contact" className="mt-4 w-full text-center bg-[#bbade0] text-white py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-lg">
                   Consult Now
                 </Link>
               </div>
