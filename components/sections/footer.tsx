@@ -105,11 +105,11 @@ export default function Footer() {
           <div className="flex items-center gap-6">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
               
-                Need a website like this? 
+               © 2026 PROSPHROUS. All rights reserved
             </span>
             <div className="h-[1px] w-12 bg-slate-100 hidden md:block" />
             <span className="text-[10px] font-bold text-slate-300 uppercase tracking-tighter">
-              Contact Developer:tryflysolution@gmail.com
+              YOU NEED WEBSITE LIKE THIS?   Contact Developer:tryflysolution@gmail.com
             </span>
           </div>
 
