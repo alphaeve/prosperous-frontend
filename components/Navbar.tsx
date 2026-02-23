@@ -20,7 +20,7 @@ const navLinks = [
     ]
   },
   { name: "Services", href: "/#services" },
-  { name: "Portfolio", href: "/#portfolio" },
+  // { name: "Portfolio", href: "/#portfolio" },
 ];
 
 export default function Navbar() {

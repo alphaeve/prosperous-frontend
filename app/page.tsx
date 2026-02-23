@@ -1,5 +1,5 @@
 import Hero from "@/components/sections/Hero";
-import SoftwareGrid from "@/components/sections/SoftwareGrid";
+// import SoftwareGrid from "@/components/sections/SoftwareGrid";
 import Services from "@/components/sections/Services";
 import ProjectStats from "@/components/sections/ProjectStats";
 // import WhyChooseUs from "@/components/sections/WhyChooseUs";
