@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { name: "Home", href: "#Hero" },
+  { name: "Home", href: "/" },
   { 
     name: "About Us", 
     href: "/about/company",
@@ -19,7 +19,7 @@ const navLinks = [
       { name: "Careers", sub: "JOIN OUR MISSION", href: "/about/careers", icon: Briefcase },
     ]
   },
-  { name: "Services", href: "#services" },
+  { name: "Services", href: "/#services" },
 ];
 
 export default function Navbar() {
@@ -27,24 +27,45 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [hoverDropdown, setHoverDropdown] = useState<string | null>(null);
+  const [currentHash, setCurrentHash] = useState("");
   const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleHashChange = () => setCurrentHash(window.location.hash);
+    
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("hashchange", handleHashChange);
+    setCurrentHash(window.location.hash);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
   }, []);
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
+  const isLinkActive = (link: typeof navLinks[0]) => {
+    if (link.href.includes("#")) {
+      const hash = link.href.split("#")[1];
+      return currentHash === `#${hash}`;
+    }
+    if (link.name === "About Us") {
+      return pathname.startsWith("/about");
+    }
+    return pathname === link.href;
+  };
+
+  const primaryBtnClass = "bg-[#8dc63f] text-[#001a12] hover:bg-white transition-all duration-300 shadow-lg active:scale-95";
+
   return (
     <div className="fixed w-full top-4 md:top-6 z-[100] px-3 md:px-6 flex justify-center font-sans">
       <nav
         className={cn(
           "w-full max-w-6xl border relative",
-          // Removed transition-all on mobile to prevent "circle to rectangle" morphing
           "md:transition-all md:duration-300", 
           isOpen 
             ? "rounded-[1.5rem] bg-[#001a12] backdrop-blur-3xl shadow-2xl border-white/20" 
@@ -52,18 +73,21 @@ export default function Navbar() {
           scrolled && !isOpen ? "py-2 md:py-2.5" : "py-3 md:py-4"
         )}
       >
-        {/* Container: px-2 on mobile moves logo to the very start */}
         <div className="px-2 md:px-10 flex justify-between items-center relative z-[110]">
           
-          {/* --- LOGO AREA --- */}
-          <Link href="/" className="flex items-center shrink-0">
-            <div className="relative h-7 w-32 md:h-12 md:w-48">
+          {/* --- LOGO AREA: Navigation to Home --- */}
+          <Link 
+            href="/" 
+            onClick={() => setCurrentHash("")} // Clears active section highlights
+            className="flex items-center shrink-0"
+          >
+            <div className="relative h-7 w-32 md:h-12 md:w-48 transition-opacity hover:opacity-80 duration-300">
               <Image
                 src="/logo.png"
                 alt="Prosperous Consultancy Logo"
                 fill
                 priority
-                className="object-contain object-left" // object-left ensures logo stays far left
+                className="object-contain object-left"
               />
             </div>
           </Link>
@@ -79,11 +103,16 @@ export default function Navbar() {
               >
                 <Link
                   href={link.href}
+                  onClick={() => {
+                    if (link.href === "/") setCurrentHash("");
+                  }}
                   className={cn(
-                    "text-[10px] font-black uppercase tracking-[0.25em] transition-all flex items-center gap-1.5",
-                    hoverDropdown === link.name || pathname === link.href 
-                      ? "text-[#8dc63f]" 
-                      : "text-white/80 hover:text-white"
+                    "text-[10px] font-black uppercase tracking-[0.25em] transition-colors duration-300 flex items-center gap-1.5",
+                    link.name === "Home" 
+                      ? "text-white/80 hover:text-[#8dc63f]" 
+                      : (hoverDropdown === link.name || isLinkActive(link) 
+                          ? "text-[#8dc63f]" 
+                          : "text-white/80 hover:text-[#8dc63f]")
                   )}
                 >
                   {link.name}
@@ -106,13 +135,13 @@ export default function Navbar() {
                           <Link 
                             key={item.name} 
                             href={item.href} 
-                            className="group flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-all"
+                            className="group flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-300"
                           >
-                            <div className="p-2.5 bg-[#8dc63f]/10 rounded-lg text-[#8dc63f] group-hover:bg-[#8dc63f] group-hover:text-black transition-all">
+                            <div className="p-2.5 bg-[#8dc63f]/10 rounded-lg text-[#8dc63f] group-hover:bg-[#8dc63f] group-hover:text-[#001a12] transition-all duration-300">
                               <item.icon size={18} />
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-[10px] font-black uppercase text-white tracking-widest group-hover:text-[#8dc63f]">{item.name}</span>
+                              <span className="text-[10px] font-black uppercase text-white tracking-widest group-hover:text-[#8dc63f] transition-colors duration-300">{item.name}</span>
                               <span className="text-[7px] text-[#8dc63f] tracking-[0.2em] font-bold uppercase mt-1 opacity-60">{item.sub}</span>
                             </div>
                           </Link>
@@ -126,22 +155,18 @@ export default function Navbar() {
             
             <Link 
               href="/#contact" 
-              className="bg-[#8dc63f] text-[#001a12] px-7 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-lg active:scale-95"
+              className={cn(primaryBtnClass, "px-7 py-3 rounded-full text-[10px] font-black uppercase tracking-widest")}
             >
               Consult Now
             </Link>
           </div>
 
-          {/* Mobile Toggle */}
-          <button 
-            className="md:hidden p-2 text-[#8dc63f]" 
-            onClick={() => setIsOpen(!isOpen)}
-          >
+          <button className="md:hidden p-2 text-[#8dc63f]" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* --- MOBILE MENU (Instant, No Height Animation) --- */}
+        {/* MOBILE MENU */}
         {isOpen && (
           <div className="md:hidden px-5 pb-8 pt-2">
             <div className="flex flex-col gap-1 mt-4">
@@ -151,10 +176,13 @@ export default function Navbar() {
                     <div>
                       <button 
                         onClick={() => setMobileMenuOpen(mobileMenuOpen === link.name ? null : link.name)} 
-                        className="flex items-center justify-between w-full py-4 text-[11px] uppercase tracking-[0.2em] text-white/90"
+                        className={cn(
+                          "flex items-center justify-between w-full py-4 text-[11px] uppercase tracking-[0.2em] transition-colors duration-300",
+                          isLinkActive(link) ? "text-[#8dc63f]" : "text-white/90 hover:text-[#8dc63f]"
+                        )}
                       >
                         {link.name} 
-                        <ChevronDown size={14} className={cn("text-[#8dc63f] transition-transform", mobileMenuOpen === link.name && "rotate-180")} />
+                        <ChevronDown size={14} className={cn("text-[#8dc63f] transition-transform duration-300", mobileMenuOpen === link.name && "rotate-180")} />
                       </button>
                       {mobileMenuOpen === link.name && (
                         <div className="bg-[#8dc63f]/5 rounded-xl mb-4 p-2 flex flex-col gap-1">
@@ -162,7 +190,10 @@ export default function Navbar() {
                             <Link 
                               key={sub.name} 
                               href={sub.href} 
-                              className="flex items-center gap-4 p-4 text-[10px] font-bold text-white/70 uppercase tracking-widest active:text-[#8dc63f]"
+                              className={cn(
+                                "flex items-center gap-4 p-4 text-[10px] font-bold text-white/70 uppercase tracking-widest active:text-[#8dc63f] transition-colors duration-200",
+                                pathname === sub.href ? "text-[#8dc63f]" : "text-white/70"
+                              )}
                             >
                               <sub.icon size={16} className="text-[#8dc63f]" /> 
                               {sub.name}
@@ -174,7 +205,15 @@ export default function Navbar() {
                   ) : (
                     <Link 
                       href={link.href} 
-                      className="block py-4 text-[11px] uppercase tracking-[0.2em] text-white/90 active:text-[#8dc63f]"
+                      onClick={() => {
+                        if (link.href === "/") setCurrentHash("");
+                      }}
+                      className={cn(
+                        "block py-4 text-[11px] uppercase tracking-[0.2em] transition-colors duration-300",
+                        link.name === "Home" 
+                          ? "text-white hover:text-[#8dc63f]" 
+                          : (isLinkActive(link) ? "text-[#8dc63f]" : "text-white/90 hover:text-[#8dc63f]")
+                      )}
                     >
                       {link.name}
                     </Link>
@@ -183,7 +222,7 @@ export default function Navbar() {
               ))}
               <Link 
                 href="/#contact" 
-                className="mt-6 w-full text-center bg-[#8dc63f] text-[#001a12] py-4 rounded-xl text-[11px] font-black uppercase tracking-[0.3em]"
+                className={cn(primaryBtnClass, "mt-6 w-full text-center py-4 rounded-xl text-[11px] font-black uppercase tracking-[0.3em]")}
               >
                 Consult Now
               </Link>
