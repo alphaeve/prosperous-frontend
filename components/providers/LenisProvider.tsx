@@ -9,7 +9,7 @@ export default function LenisProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // 🚫 Disable Lenis on touch devices (prevents lag)
+    // Disable smooth scrolling on touch devices
     if (
       typeof window !== "undefined" &&
       ("ontouchstart" in window || navigator.maxTouchPoints > 0)
@@ -18,20 +18,33 @@ export default function LenisProvider({
     }
 
     const lenis = new Lenis({
-      duration: 0.7, // Fast & responsive
-      easing: (t: number) => 1 - Math.pow(1 - t, 3), // easeOutCubic
+      duration: 1.35,
+      easing: (t: number) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
-      wheelMultiplier: 1.25, // Natural scroll distance
+      wheelMultiplier: 1,
     });
 
-    function raf(time: number) {
+    // RAF loop
+    let rafId: number;
+    const raf = (time: number) => {
       lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+      rafId = requestAnimationFrame(raf);
+    };
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+
+    // Scroll event (SAFE TypeScript version)
+    lenis.on("scroll", (e: { velocity: number }) => {
+      const velocity = e.velocity;
+
+      document.documentElement.style.setProperty(
+        "--scroll-velocity",
+        String(Math.min(Math.abs(velocity), 100))
+      );
+    });
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);
