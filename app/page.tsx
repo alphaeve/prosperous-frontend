@@ -57,9 +57,9 @@ export default function Home() {
           <ContactForm />
         </div>
       </section>
-      <section id="footer">
+      {/* <section id="footer">
         <Footer/>
-       </section>
+       </section> */}
     </main>
   );
 }

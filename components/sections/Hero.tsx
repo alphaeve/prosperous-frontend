@@ -23,7 +23,7 @@ export default function Hero() {
   }, []);
   
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center font-sans z-0 bg-black">
+    <section id="home" className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center font-sans z-0 bg-black">
       
       {/* 1. BACKGROUND VIDEO */}
       <div className="absolute inset-0 -z-30">
@@ -108,12 +108,12 @@ export default function Hero() {
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </span>
               </button>
-              <button 
+              {/* <button 
                 onClick={() => document.getElementById('achievements')?.scrollIntoView({ behavior: 'smooth' })}
                 className="px-10 py-4 md:py-5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white border border-white/20 backdrop-blur-sm hover:bg-white hover:text-[#001a12] transition-all active:scale-95"
               >
                   Technical Portfolio
-              </button>
+              </button> */}
             </motion.div>
         </div>
       </div>

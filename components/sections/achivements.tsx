@@ -49,7 +49,7 @@ const AchievementCard = ({ item, index, progress, range, targetScale }: CardProp
     <div className="sticky top-0 h-[60vh] w-full flex items-center justify-center pt-10">
       <motion.div
         style={{ scale, y: yOffset }}
-        className="relative w-full max-w-4xl bg-white border border-slate-100 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,61,43,0.12)] min-h-[300px] flex flex-col md:flex-row"
+        className="relative w-full max-w-4xl bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,61,43,0.12)] min-h-[300px] flex flex-col md:flex-row"
       >
         <div className="relative w-full md:w-[40%] h-44 md:h-auto overflow-hidden">
           <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
