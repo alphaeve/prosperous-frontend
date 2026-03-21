@@ -65,9 +65,9 @@ const AchievementCard = ({ item, index, progress, range, targetScale }: CardProp
           </div>
           <h3 className="text-xl md:text-2xl font-black text-[#003d2b] mb-2 uppercase tracking-tighter leading-tight">{item.title}</h3>
           <p className="text-slate-500 text-xs md:text-sm leading-relaxed mb-6 font-medium line-clamp-2">{item.description}</p>
-          <div className="mt-auto flex items-center gap-3 text-[#003d2b] text-[10px] font-black uppercase tracking-[0.25em] hover:text-[#8dc63f] transition-all cursor-pointer">
+          {/* <div className="mt-auto flex items-center gap-3 text-[#003d2b] text-[10px] font-black uppercase tracking-[0.25em] hover:text-[#8dc63f] transition-all cursor-pointer">
             Case Details <ArrowRight size={14} className="text-[#8dc63f]" />
-          </div>
+          </div> */}
         </div>
       </motion.div>
     </div>

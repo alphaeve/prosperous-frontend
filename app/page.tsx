@@ -8,8 +8,9 @@ import Blog from "@/components/sections/blog";
 import BlogSection from "@/components/sections/blog";
 import ClientMarquee from "@/components/sections/client";
 import Achievements from "@/components/sections/achivements";
-import Footer from "@/components/sections/footer";
+// import Footer from "@/components/sections/footer";
 import WhyProsperousScrubber from "@/components/sections/why";
+import ReviewSection from "@/components/sections/review";
 
 export default function Home() {
   
@@ -45,7 +46,9 @@ export default function Home() {
        <section id="achivements">
         < Achievements/>
        </section>
-      
+       <section id="reviews">
+        <ReviewSection/>
+       </section>
 
       <section id="contact" className="py-24 bg-slate-50">
         
